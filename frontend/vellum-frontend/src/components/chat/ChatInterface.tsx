@@ -42,15 +42,45 @@ export function ChatInterface() {
       timestamp: new Date()
     }])
 
-    // Simulate bot response
-    setTimeout(() => {
+    try {
+      const response = await fetch('http://localhost:5000/run-script', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ message: userMessage })
+      })
+      
+      const data = await response.json()
+      
+      // Check if we got a valid response
+      if (data.stdout && data.stdout.trim()) {
+        setMessages(prev => [...prev, {
+          content: data.stdout.trim(),
+          isUser: false,
+          timestamp: new Date()
+        }])
+      } else {
+        setMessages(prev => [...prev, {
+          content: "I couldn't generate a response. Please try again.",
+          isUser: false,
+          timestamp: new Date()
+        }])
+      }
+
+      if (data.stderr) {
+        console.error('Script error:', data.stderr)
+      }
+    } catch (error) {
+      console.error('Failed to run script:', error)
       setMessages(prev => [...prev, {
-        content: "This is a simulated response. The actual Vellum RAG integration will be implemented later.",
+        content: "Failed to get response from server. Please try again.",
         isUser: false,
         timestamp: new Date()
       }])
+    } finally {
       setIsProcessing(false)
-    }, 1000)
+    }
   }
 
   return (
