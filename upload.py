@@ -3,6 +3,9 @@
 import os
 from vellum.client import Vellum
 
+# Exported variable
+DOCUMENT_LABEL = "Human-friendly label for your document"
+
 # Get API key from environment variable
 API_KEY = os.environ.get("VELLUM_API_KEY")
 if not API_KEY:

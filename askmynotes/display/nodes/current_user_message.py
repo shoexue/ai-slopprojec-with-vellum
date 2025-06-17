@@ -24,5 +24,5 @@ class CurrentUserMessageDisplay(BaseTemplatingNodeDisplay[CurrentUserMessage]):
         CurrentUserMessage.Ports.default: PortDisplayOverrides(id=UUID("f664b71f-0d75-4bd7-90bf-d7867b2b963d"))
     }
     display_data = NodeDisplayData(
-        position=NodeDisplayPosition(x=1730.1514931740614, y=229.77889358468428), width=554, height=422
+        position=NodeDisplayPosition(x=1730.1514931740614, y=229.77889358468428), width=554, height=368
     )
