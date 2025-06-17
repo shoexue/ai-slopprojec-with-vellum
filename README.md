@@ -1,6 +1,6 @@
 this project was made with vellum-ai. 
 it is to help students with answer questions based on notes. 
-it helped make the ai workflow and it was really really cool. 
+it helped make the ai workflow and it was very cool. 
 
 
 video demo 
