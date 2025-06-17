@@ -49,10 +49,10 @@ export function DocumentUpload({ onUpload }: DocumentUploadProps) {
   }
 
   return (
-    <Card className="p-4 mb-4">
+    <Card className="p-4 mb-4 border-pink-200 bg-white">
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="document">Upload Document to Vellum</Label>
+          <Label htmlFor="document" className="text-pink-700">Upload Document to Vellum</Label>
           <div className="flex items-center gap-4">
             <input
               id="document"
@@ -64,11 +64,12 @@ export function DocumentUpload({ onUpload }: DocumentUploadProps) {
             <Button
               onClick={() => document.getElementById('document')?.click()}
               disabled={isUploading}
+              className="bg-pink-500 hover:bg-pink-600 text-white"
             >
               {isUploading ? 'Uploading to Vellum...' : 'Choose File'}
             </Button>
             {uploadedFile && (
-              <span className="text-sm text-muted-foreground">
+              <span className="text-sm text-pink-600">
                 {uploadedFile.name}
               </span>
             )}

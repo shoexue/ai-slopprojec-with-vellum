@@ -84,9 +84,9 @@ export function ChatInterface() {
   }
 
   return (
-    <div className="flex flex-col h-[600px] w-full max-w-2xl mx-auto p-4">
+    <div className="flex flex-col h-[600px] w-full max-w-2xl mx-auto p-4 bg-pink-50">
       <DocumentUpload onUpload={handleDocumentUpload} />
-      <ScrollArea className="flex-1 p-4 rounded-lg border">
+      <ScrollArea className="flex-1 p-4 rounded-lg border border-pink-200 bg-white">
         <div className="space-y-4">
           {messages.map((message, index) => (
             <ChatMessage
@@ -102,10 +102,14 @@ export function ChatInterface() {
           value={input}
           onChange={(e) => setInput(e.target.value)}
           placeholder="Ask a question about your document..."
-          className="flex-1"
+          className="flex-1 border-pink-200 focus:border-pink-400"
           disabled={isProcessing}
         />
-        <Button type="submit" disabled={isProcessing}>
+        <Button 
+          type="submit" 
+          disabled={isProcessing}
+          className="bg-pink-500 hover:bg-pink-600 text-white"
+        >
           {isProcessing ? 'Processing...' : 'Send'}
         </Button>
       </form>
