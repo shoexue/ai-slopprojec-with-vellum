@@ -10,26 +10,49 @@ interface DocumentUploadProps {
 export function DocumentUpload({ onUpload }: DocumentUploadProps) {
   const [isUploading, setIsUploading] = useState(false)
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+  const [error, setError] = useState<string | null>(null)
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
 
     setUploadedFile(file)
     setIsUploading(true)
+    setError(null)
     
-    // Simulate upload delay
-    setTimeout(() => {
-      onUpload(file)
+    try {
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const response = await fetch('http://localhost:5000/upload-document', {
+        method: 'POST',
+        body: formData,
+      })
+
+      const data = await response.json()
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Upload failed')
+      }
+
+      if (data.success) {
+        onUpload(file)
+      } else {
+        throw new Error('Upload failed')
+      }
+    } catch (error) {
+      console.error('Failed to upload document:', error)
+      setError(error instanceof Error ? error.message : 'Upload failed')
+    } finally {
       setIsUploading(false)
-    }, 1000)
+    }
   }
 
   return (
     <Card className="p-4 mb-4">
       <div className="space-y-4">
         <div className="space-y-2">
-          <Label htmlFor="document">Upload Document</Label>
+          <Label htmlFor="document">Upload Document to Vellum</Label>
           <div className="flex items-center gap-4">
             <input
               id="document"
@@ -42,7 +65,7 @@ export function DocumentUpload({ onUpload }: DocumentUploadProps) {
               onClick={() => document.getElementById('document')?.click()}
               disabled={isUploading}
             >
-              {isUploading ? 'Uploading...' : 'Choose File'}
+              {isUploading ? 'Uploading to Vellum...' : 'Choose File'}
             </Button>
             {uploadedFile && (
               <span className="text-sm text-muted-foreground">
@@ -50,6 +73,11 @@ export function DocumentUpload({ onUpload }: DocumentUploadProps) {
               </span>
             )}
           </div>
+          {error && (
+            <span className="text-sm text-red-500">
+              {error}
+            </span>
+          )}
         </div>
       </div>
     </Card>
